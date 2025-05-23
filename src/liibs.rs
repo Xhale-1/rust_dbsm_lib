@@ -17,12 +17,14 @@ pub fn setup_oracle_client() {
         .unwrap()
         .join("Oracle_OCI_libs");
     
-        std::env::set_var("OCI_LIB_DIR", client_path.to_str().unwrap());
+        unsafe {
+            std::env::set_var("OCI_LIB_DIR", client_path.to_str().unwrap());
+        }
 
         if cfg!(target_os = "windows") {
             let current_path = std::env::var("PATH").unwrap_or_default();
             let new_path = format!("{};{}",client_path.to_str().unwrap(),current_path);
-            std::env::set_var("PATH",new_path);
+            unsafe { std::env::set_var("PATH",new_path); }
         }
 }
 
